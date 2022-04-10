@@ -1,36 +1,30 @@
 # Task_1_1
-Лямбда-выражения и функциональные интерфейсы. Задача 1 "Работяга"
+Лямбда-выражения и функциональные интерфейсы. Задача 1 "Калькулятор"
+
+# Задача 1: Калькулятор
 
 ## Описание
-В данной задаче вам необходимо реализовать класс `Worker`, который будет выполнять некоторые задачи и возвращать результат в родительский класс `Main`.
+Создайте класс `Calculator`. В нем создайте статическую переменную типа `Supplier`. Это функциональный интерфейс, реализующий метод `get()`. С помощью данной переменной можно будет получить экземпляр класса `Calculator`. Реализуйте ссылку на вызов конструктора класса `Calculator() { }`.
 ```java
-public class Worker {
-
-}
+static Supplier<Calculator> instance = Calculator::new;
 ```
-Для того, чтобы класс `Worker` мог вернуть резлультат своей работы, реализуйте собственный функциональный интерфейс `OnTaskDoneListener`. В нем определите только один метод `onDone()` без реализации и пометьте интерфейс аннотацией `@FunctionalInterface`:
+Далее добавьте несколько переменных типа `BinaryOperator` для математических операций над двумя числами. Типизируйте их как `Integer`:
 ```java
-@FunctionalInterface
-public interface OnTaskDoneListener {
-    void onDone(String result);
-}
+BinaryOperator<Integer> plus = (x, y) -> x + y;
+BinaryOperator<Integer> minus = (x, y) -> x - y;
+BinaryOperator<Integer> multiply = (x, y) -> x * y;
+BinaryOperator<Integer> devide = (x, y) -> x / y;
 ```
-Добавьте в класс `Worker` переменную `callback` типа `OnTaskDoneListener`:
+Добавьте несколько переменных типа `UnaryOperator` для произведения математических операций над одним числом:
 ```java
-private OnTaskDoneListener callback;
+UnaryOperator<Integer> pow = x -> x * x;
+UnaryOperator<Integer> abs = x -> x > 0 ? x : x * -1;
 ```
-Передайте в класс `Worker` ее значение через конструктор:
+Добавьте переменную типа `Predicate` для определения положительное ли число:
 ```java
-public Worker(OnTaskDoneListener callback) {
-    this.callback = callback;
-}
+Predicate<Integer> isPositive = x -> x > 0;
 ```
-Смоделируйте выполнение классом `Worker` какой либо работы, например:
+Добавьте переменную типа `Consumer` для вывода числа в консоль. Используйте для этого ссылку на статический метод `println()`:
 ```java
-public void start() {
-    for (int i = 0; i < 100; i++) {
-        callback.onDone("Task " + i + " is done");
-    }
-}
+Consumer<Integer> println = System.out::println;
 ```
-Обратите внимание на то, что каждая итерация цикла означает выполнение задачи, результат который передается через метод `onDone()` функционального интерфейса `OnTaskDoneListener`.
